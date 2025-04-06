@@ -1,7 +1,7 @@
 ﻿using Demo.BusinessLogic.DataTransferObjects;
 using Demo.BusinessLogic.Factories;
 using Demo.DataAccess.Models;
-using Demo.DataAccess.Repositories;
+using Demo.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +35,7 @@ namespace Demo.BusinessLogic.Services
         }
 
         // Create new department
-        public int AddDepartment(CreatedDepartmentDto departmentDto)
+        public int CreateDepartment(CreatedDepartmentDto departmentDto)
         {
             var department = departmentDto.ToEntity();
             return _departmentRepository.Add(department);
