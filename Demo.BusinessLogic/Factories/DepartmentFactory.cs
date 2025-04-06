@@ -1,5 +1,5 @@
 ﻿using Demo.BusinessLogic.DataTransferObjects;
-using Demo.DataAccess.Models;
+using Demo.DataAccess.Models.DepartmentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +12,25 @@ namespace Demo.BusinessLogic.Factories
     {
         public static DepartmentDto ToDepartmentDto(this Department d) => new DepartmentDto()
         {
-            DeptId = d.Id,
+            Id = d.Id,
             Code = d.Code,
             Description = d.Description,
             Name = d.Name,
             DateOfCreation = DateOnly.FromDateTime(d.CreatedOn)
         };
-        
+
         public static DepartmentDetialsDto ToDepartmentDetialsDto(this Department department) => new DepartmentDetialsDto()
         {
             Id = department.Id,
             Name = department.Name,
-            CreatedOn = DateOnly.FromDateTime(department.CreatedOn)
+            Code = department.Code,
+            Description = department.Description,
+            DateOfCreation = DateOnly.FromDateTime(department.CreatedOn),
+            CreatedBy = department.CreatedBy,
+            LastModifiedBy = department.LastModifiedBy,
+            LastModifiedOn = DateOnly.FromDateTime(department.LastModifiedOn)
         };
-        
+
         public static Department ToEntity(this CreatedDepartmentDto departmentDto)=>new Department()
             {
                 Name = departmentDto.Name,
