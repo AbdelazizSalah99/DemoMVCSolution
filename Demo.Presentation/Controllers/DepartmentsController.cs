@@ -1,5 +1,6 @@
 ﻿using Demo.BusinessLogic.DataTransferObjects;
-using Demo.BusinessLogic.Services;
+using Demo.BusinessLogic.DataTransferObjects.DepartmentDtos;
+using Demo.BusinessLogic.Services.Interfaces;
 using Demo.Presentation.ViewModels.DepartmentViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace Demo.Presentation.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
+        //[ValidateAntiForgeryToken] // Action Filter
         public IActionResult Create(CreatedDepartmentDto departmentDto)
         {
             if(ModelState.IsValid) // Server side validation
@@ -39,7 +41,7 @@ namespace Demo.Presentation.Controllers
                 catch(Exception ex)
                 {
                     // Log Exception
-                    if (_environment.IsDevelopment())
+                    if (_environment.IsDevelopment()) 
                     {
                         //1. Development => log Error in Console And Returns Same view with error massage
                         ModelState.AddModelError(string.Empty, ex.Message);
@@ -134,14 +136,6 @@ namespace Demo.Presentation.Controllers
         #endregion
 
         #region Delete Department
-        //[HttpGet]
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (!id.HasValue) return BadRequest();
-        //    var department = _departmentService.GetDepartmentByID(id.Value);
-        //    if (department is null) return NotFound();
-        //    return View(department);
-        //}
         [HttpPost]
         public IActionResult Delete(int id)
         {

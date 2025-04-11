@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferObjects
+namespace Demo.BusinessLogic.DataTransferObjects.DepartmentDtos
 {
     public class DepartmentDto
     {
@@ -12,7 +12,7 @@ namespace Demo.BusinessLogic.DataTransferObjects
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; } = string.Empty;
-        public string Description    { get; set; } = string.Empty ;
+        public string Description { get; set; } = string.Empty;
         public DateOnly DateOfCreation { get; set; }
     }
 }

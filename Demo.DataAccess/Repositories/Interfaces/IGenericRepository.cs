@@ -14,5 +14,6 @@ namespace Demo.DataAccess.Repositories.Interfaces
         TEntity? GetById(int id);
         int Remove(TEntity entity);
         int Update(TEntity entity);
+
     }
 }
