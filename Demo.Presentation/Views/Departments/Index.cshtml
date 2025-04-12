@@ -2,7 +2,30 @@
 @model IEnumerable<DepartmentDto>
 @{
     ViewData["Title"] = "Index";
+
 }
+
+
+@if (!string.IsNullOrWhiteSpace(TempData["Message"] as string))
+{
+    <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed p-3" style="bottom: 25px; right:25px; z-index: 100;">
+        <div class="toast fade show " role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Success!!</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["Message"]
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
 
 <h1 class="my-3">All Departments</h1>
 
@@ -33,8 +56,10 @@
                     <td>@department.Name</td>
                     <td>@department.Description</td>
                     <td>@department.DateOfCreation</td>
-                    <td><a class="btn btn-primary" asp-action="Details" asp-route-Id="@department.Id"><i class="fas fa-eye"></i> Details</a></td>
-                    <td><a class="btn btn-success" asp-action="Edit" asp-route-Id="@department.Id"><i class="fas fa-edit"></i> Edit</a></td>
+
+                    @* @Html.RenderPartialAsync("_ButtonsPartialView", department.Id) *@
+                    <partial name="_ButtonsPartialView" model="@department.Id" />
+           
                     <td>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal-@department.Id">
                             <i class="fas fa-trash"></i> Delete
@@ -47,7 +72,10 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Are You Sure to Delete this Department?
+                                        <h6>Are you sure you want to delete the department called</h6>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center">@department.Name - @department.Description?</h5>
                                     </div>
                                     <div class="modal-footer">
                                         <form asp-action="Delete" asp-controller="Departments" asp-route-id="@department.Id" class="mt-4">
@@ -67,7 +95,7 @@
 }
 else
 {
-    <div class="alert-info mt-2">
+    <div class="alert alert-info mt-3">
         <h2>No Departments Found !!</h2>
     </div>
 }
