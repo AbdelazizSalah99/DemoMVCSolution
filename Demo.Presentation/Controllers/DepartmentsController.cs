@@ -24,19 +24,31 @@ namespace Demo.Presentation.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken] // Action Filter
-        public IActionResult Create(CreatedDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModel departmentViewModel)
         {
             if(ModelState.IsValid) // Server side validation
             {
                 try
                 {
+                    var departmentDto = new CreatedDepartmentDto()
+                    {
+                        Name = departmentViewModel.Name,
+                        Code = departmentViewModel.Code,
+                        DateOfCreation = departmentViewModel.DateOfCreation,
+                        Description = departmentViewModel.Description
+                    };
                     int Result = _departmentService.CreateDepartment(departmentDto);
+                    string Message;
                     if (Result > 0)
-                        return RedirectToAction(nameof(Index));
+                    { 
+                        Message = $"Department {departmentViewModel.Name} Is Created Successfully"; 
+                    }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Department Can't Be Created");
+                        Message = $"Department {departmentViewModel.Name} Can't Be Created";
                     }
+                    TempData["Message"] = Message;
+                    return RedirectToAction(nameof(Index), new { Message });
                 }
                 catch(Exception ex)
                 {
@@ -54,7 +66,7 @@ namespace Demo.Presentation.Controllers
                     }
                 }
             }
-            return View(departmentDto);
+            return View(departmentViewModel);
 
         }
 
@@ -82,7 +94,7 @@ namespace Demo.Presentation.Controllers
             var department = _departmentService.GetDepartmentByID(id.Value);
             if (department is null) return NotFound();
 
-            var departmentViewModel = new DepartmentEditViewModel()
+            var departmentViewModel = new DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -93,7 +105,7 @@ namespace Demo.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int id, DepartmentEditViewModel viewModel)
+        public IActionResult Edit([FromRoute]int id, DepartmentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
